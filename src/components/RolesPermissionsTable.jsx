@@ -12,6 +12,67 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const [selectedRole, setSelectedRole] = useState(null);
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
 
+    // Nuevos estados para el checkbox de entidades
+    const [selectedEntity, setSelectedEntity] = useState(null);
+    const [selectAllEntityPermissions, setSelectAllEntityPermissions] = useState({});
+
+    useEffect(() => {
+        // Inicializar selectAllEntityPermissions cuando el componente se monta
+        const initialSelectAllEntityPermissions = entities.reduce((acc, entity) => {
+            acc[entity] = false; // o true según tu lógica
+            return acc;
+        }, {});
+        console.log("Initial Select All Entity Permissions:", initialSelectAllEntityPermissions);
+        setSelectAllEntityPermissions(initialSelectAllEntityPermissions);
+
+    }, [entities]);
+
+
+    // Nueva función para manejar el mouseover sobre una entidad
+    const handleEntityMouseOver = (entity) => {
+
+        setSelectedEntity(entity);
+    };
+
+    // Nueva función para manejar el mouseout sobre una entidad
+    const handleEntityMouseOut = () => {
+        setSelectedEntity(null);
+    };
+
+    // Nueva función para asignar/quitar todos los permisos asociados a una entidad para todos los roles
+    const handleSelectAllEntityPermissions = () => {
+        if (selectedEntity) {
+            setUpdatedRoles((prevRoles) => {
+                return prevRoles.map((role) => {
+                    const entityPrefix = `${selectedEntity}:`;
+
+                    const updatedPermissions = selectAllEntityPermissions[selectedEntity]
+                        ? role.permissions.filter(permission => !permission.startsWith(entityPrefix))
+                        : [
+                            ...role.permissions.filter(permission => !permission.startsWith(entityPrefix)),
+                            ...getEntityPermissions(selectedEntity).map(action => `${selectedEntity}:${action}`),
+                        ];
+
+                    return {
+                        ...role,
+                        permissions: updatedPermissions,
+                    };
+                });
+            });
+
+            // Actualizar selectAllEntityPermissions
+            setSelectAllEntityPermissions((prevPermissions) => {
+                return {
+                    ...prevPermissions,
+                    [selectedEntity]: !prevPermissions[selectedEntity],
+                };
+            });
+        }
+    };
+
+
+
+    //roles
     useEffect(() => {
         // Inicializar selectAllPermissions cuando el componente se monta
         const initialSelectAllPermissions = roles.reduce((acc, role) => {
@@ -20,17 +81,19 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         }, {});
         setSelectAllPermissions(initialSelectAllPermissions);
     }, [roles]);
-
+    //roles
     const handleRoleMouseOver = (role) => {
         setSelectedRole(role);
     };
-
+    //roles
     const handleRoleMouseOut = () => {
         setSelectedRole(null);
     };
-
+    //roles
     const handleSelectAllPermissions = () => {
         console.log("click")
+        console.log(`roles actuales${JSON.stringify(updatedRoles)}`)
+        console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
         if (selectedRole) {
             setUpdatedRoles((prevRoles) => {
                 return prevRoles.map((role) => {
@@ -131,6 +194,13 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                 handleAddRole={handleAddRole}
                 setShowAddPermissionModal={setShowAddPermissionModal}
                 setNewRole={setNewRole}
+
+                handleSelectAllEntityPermissions={handleSelectAllEntityPermissions}
+                handleEntityMouseOut={handleEntityMouseOut}
+                handleEntityMouseOver={handleEntityMouseOver}
+                selectedEntity={selectedEntity}
+                selectAllEntityPermissions={selectAllEntityPermissions}
+
             />
 
             {/* Componente del modal de agregar permisos */}

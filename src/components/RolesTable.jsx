@@ -15,7 +15,12 @@ const RolesTable = ({
     updatedPermissions,
     handleAddRole,
     setShowAddPermissionModal,
-    setNewRole
+    setNewRole,
+    handleEntityMouseOver,
+    handleEntityMouseOut,
+    selectedEntity,
+    selectAllEntityPermissions,
+    handleSelectAllEntityPermissions,
 }) => {
     return (
         <table>
@@ -24,9 +29,22 @@ const RolesTable = ({
                     <th></th>
                     {entities.map(entity => (
                         <React.Fragment key={entity}>
-                            <th colSpan={getEntityPermissions(entity).length}>{entity}</th>
+                            <th colSpan={getEntityPermissions(entity).length}>
+                                <div onMouseOver={() => handleEntityMouseOver(entity)} onMouseOut={handleEntityMouseOut}>
+                                    {/* Checkbox para seleccionar/deseleccionar todos los permisos para la entidad */}
+                                    {selectedEntity === entity && (
+                                        <input
+                                            type="checkbox"
+                                            checked={selectAllEntityPermissions[entity]}
+                                            onChange={handleSelectAllEntityPermissions}
+                                        />
+                                    )}
+                                    {entity}
+                                </div>
+                            </th>
                         </React.Fragment>
                     ))}
+
                     <th colSpan="2">
                         <button onClick={() => setShowAddPermissionModal(true)}>Añadir Nuevo Permiso</button>
                     </th>
