@@ -1,14 +1,65 @@
 // Dentro del componente RolesPermissionsTable
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddPermissionModal from './AddPermissionModal';
 
 const RolesPermissionsTable = ({ roles, permissions }) => {
 
     const [newRole, setNewRole] = useState('');
     const [showAddPermissionModal, setShowAddPermissionModal] = useState(false);
-    const [updatedPermissions, setUpdatedPermissions] = useState(permissions);
-    const [updatedRoles, setUpdatedRoles] = useState(roles);
+    const [updatedPermissions, setUpdatedPermissions] = useState(JSON.parse(JSON.stringify(permissions)));
+    const [updatedRoles, setUpdatedRoles] = useState(JSON.parse(JSON.stringify(roles)));
     const [entities, setEntities] = useState([...new Set(permissions.map(permission => permission.split(":")[0]))]);
+
+
+    // Nuevos estados para el checkbox de roles
+    const [selectedRole, setSelectedRole] = useState(null);
+    const [selectAllPermissions, setSelectAllPermissions] = useState({});
+
+
+    useEffect(() => {
+        // Inicializar selectAllPermissions cuando el componente se monta
+        const initialSelectAllPermissions = roles.reduce((acc, role) => {
+            acc[role.id] = role.permissions.length > 0;
+            return acc;
+        }, {});
+        setSelectAllPermissions(initialSelectAllPermissions);
+    }, [roles]);
+
+    const handleRoleMouseOver = (role) => {
+        setSelectedRole(role);
+    };
+
+    const handleRoleMouseOut = () => {
+        setSelectedRole(null);
+    };
+
+    const handleSelectAllPermissions = () => {
+        console.log("click")
+        if (selectedRole) {
+            setUpdatedRoles((prevRoles) => {
+                return prevRoles.map((role) => {
+                    if (role.id === selectedRole.id) {
+                        return {
+                            ...role,
+                            permissions: selectAllPermissions[selectedRole.id]
+                                ? []
+                                : [...updatedPermissions],
+                        };
+                    }
+                    return role;
+                });
+            });
+
+            // Actualizar selectAllPermissions
+            setSelectAllPermissions((prevPermissions) => {
+                return {
+                    ...prevPermissions,
+                    [selectedRole.id]: !prevPermissions[selectedRole.id],
+                };
+            });
+        }
+    };
+
 
 
     const handleAddRole = () => {
@@ -36,7 +87,8 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
         // Limpiar el campo de nuevo rol después de la adición
         setNewRole('');
-        console.log(updatedRoles)
+        console.log(`roles actuales${JSON.stringify(updatedRoles)}`)
+        console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
 
     };
     const handleAddPermission = (newPermission) => {
@@ -57,7 +109,8 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         // Cerrar el modal
         setShowAddPermissionModal(false);
 
-        console.log("permisos actualizados" + updatedPermissions)
+        console.log(`permisos actuales${updatedPermissions}`)
+        console.log(`PERMISOS ORIGINALES:   ${permissions}`)
     };
 
     const renderTable = () => {
@@ -90,8 +143,18 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                 <tbody>
                     {updatedRoles.map(role => (
                         <React.Fragment key={role.id}>
-                            <tr>
-                                <td>{role.name}</td>
+                            <tr onMouseOver={() => handleRoleMouseOver(role)} onMouseOut={handleRoleMouseOut}>
+                                <td>
+                                    {/* Checkbox para seleccionar/deseleccionar todos los permisos para el rol */}
+                                    {selectedRole === role && (
+                                        <input
+                                            type="checkbox"
+                                            checked={selectAllPermissions}
+                                            onChange={handleSelectAllPermissions}
+                                        />
+                                    )}
+                                    {role.name}
+                                </td>
                                 {entities.flatMap(entity => (
                                     getEntityPermissions(entity).map(permission => (
                                         <React.Fragment key={`${entity}_${permission}`}>
@@ -120,6 +183,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                         </React.Fragment>
                     ))}
                 </tbody>
+
                 <tfoot>
                     <tr>
                         <td>
