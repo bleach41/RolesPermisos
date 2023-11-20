@@ -1,5 +1,6 @@
+//AddPermissionModal
 import React, { useState } from 'react';
-
+import './AddPermissionModal.css'
 
 const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) => {
     const [newPermission, setNewPermission] = useState('');
@@ -35,22 +36,36 @@ const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) =
 
     return (
         // Renderizar el modal con un input y un botón "Ok"
-        // Puedes ajustar el diseño y los estilos según tus necesidades
-        <div style={{ display: showModal ? 'block' : 'none' }}>
-            <div>
-                <label>Introduce el nuevo permiso:</label>
-                <input
-                    type="text"
-                    value={newPermission}
-                    onChange={(e) => setNewPermission(e.target.value)}
-                />
-            </div>
-            <div>
-                <button onClick={handleAddPermission}>OK</button>
-                <button onClick={onClose}>Cancelar</button>
+        <div
+            className={`modal-overlay ${showModal ? 'show' : ''}`}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <label>Introduce el nuevo permiso:</label>
+                        <input
+                            type="text"
+                            placeholder="ENTITY : PERMISSION"
+                            value={newPermission}
+                            onChange={(e) => setNewPermission(e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                    <div className="modal-buttons">
+                        <button className="modal-button" onClick={handleAddPermission}>
+                            OK
+                        </button>
+                        <button className="modal-button" onClick={onClose}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
+
+
 };
 
 export default AddPermissionModal;
