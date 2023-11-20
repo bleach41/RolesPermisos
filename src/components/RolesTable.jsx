@@ -232,7 +232,7 @@ const RolesTable = ({
                                     getEntityPermissions(entity).map(permission => (
                                         <React.Fragment key={`${entity}_${permission}`}>
                                             <td>
-                                                {role.permissions.includes(`${entity}:${permission}`) ? 'X' : ''}
+                                                {role.permissions.includes(`${entity}:${permission}`) ? '✔' : ''}
                                             </td>
                                         </React.Fragment>
                                     ))
