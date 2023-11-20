@@ -13,6 +13,14 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
 
 
+    // Nueva función para manejar el clic en el botón "Salvar"
+    const handleSave = () => {
+        // Devuelve el arreglo actualizado con roles y permisos
+        const result = { roles: updatedRoles, permissions: updatedPermissions };
+        console.log('Resultado de la función handleSave:', result);
+        return result;
+    };
+
     // Nuevos estados para el checkbox de PERMISOS
     const [selectedPermission, setSelectedPermission] = useState(null);
     const [selectAllPermissionRoles, setSelectAllPermissionRoles] = useState({});
@@ -300,7 +308,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                 setEntities={setEntities}
                 setUpdatedPermissions={setUpdatedPermissions}
 
-
+                onSave={handleSave}
 
             />
 

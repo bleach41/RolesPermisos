@@ -31,8 +31,20 @@ const RolesTable = ({
     setUpdatedRoles,
 
     setEntities,
-    setUpdatedPermissions
+    setUpdatedPermissions,
+
+    onSave
 }) => {
+
+
+    // Función para formatear un texto según las reglas especificadas
+    const formatText = (text) => {
+        // Capitalizar la primera letra y convertir el resto en minúsculas
+        const formattedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+        // Sustituir el carácter de subrayado por un espacio en blanco
+        const finalText = formattedText.replace(/_/g, ' ');
+        return finalText;
+    };
 
 
     // Eliminación de permisos
@@ -135,7 +147,7 @@ const RolesTable = ({
                                             onChange={handleSelectAllEntityPermissions}
                                         />
                                     )}
-                                    {entity}
+                                    {formatText(entity)}
                                     {selectedEntity === entity && (
                                         <img
                                             className="icon-trash"
@@ -153,6 +165,7 @@ const RolesTable = ({
 
                         <th colSpan="2">
                             <button onClick={() => setShowAddPermissionModal(true)}>Añadir Nuevo Permiso</button>
+                            <button className="boton-save" onClick={onSave}>Salvar</button>
                         </th>
                     </tr>
                     <tr>
@@ -171,7 +184,7 @@ const RolesTable = ({
                                                 onChange={handleSelectAllPermissionRoles}
                                             />
                                         )}
-                                        {permission}
+                                        {formatText(permission)}
                                         {/* Añadir el ícono de eliminación */}
                                         {selectedPermission === `${entity}:${permission}` && (
                                             <img
