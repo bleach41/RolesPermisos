@@ -6,9 +6,6 @@ table {
 
 }
 
-body {
-  padding: 7rem;
-}
 
 thead,
 tfoot {
@@ -52,8 +49,8 @@ td:first-child {
 
 
 /* Filas de encabezado (entidades en tu caso) */
-th:nth-child(2),
-th:nth-child(3),
+/* th:nth-child(2),
+th:nth-child(3), */
 /* Puedes añadir más según sea necesario */
 td:nth-child(2),
 td:nth-child(3) {
@@ -66,6 +63,7 @@ td:nth-child(3) {
 .table-container {
   max-width: 100%;
   overflow-x: auto;
+
   /* Barra de desplazamiento horizontal */
 }
 
