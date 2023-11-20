@@ -295,6 +295,13 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                 selectAllPermissionRoles={selectAllPermissionRoles}
                 handleSelectAllPermissionRoles={handleSelectAllPermissionRoles}
 
+                setUpdatedRoles={setUpdatedRoles}
+
+                setEntities={setEntities}
+                setUpdatedPermissions={setUpdatedPermissions}
+
+
+
             />
 
             {/* Componente del modal de agregar permisos */}
