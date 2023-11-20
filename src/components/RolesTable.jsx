@@ -21,6 +21,12 @@ const RolesTable = ({
     selectedEntity,
     selectAllEntityPermissions,
     handleSelectAllEntityPermissions,
+
+    selectedPermission,
+    handlePermissionMouseOver,
+    handlePermissionMouseOut,
+    selectAllPermissionRoles,
+    handleSelectAllPermissionRoles,
 }) => {
     return (
         <table>
@@ -54,7 +60,20 @@ const RolesTable = ({
                     {entities.flatMap(entity => (
                         getEntityPermissions(entity).map(permission => (
                             <React.Fragment key={`${entity}_${permission}`}>
-                                <th key={`${entity}_${permission}`}>{permission}</th>
+                                <th key={`${entity}_${permission}`}>
+                                    <div onMouseOver={() => handlePermissionMouseOver(`${entity}:${permission}`)}
+                                        onMouseOut={handlePermissionMouseOut}>
+                                        {/* Checkbox para seleccionar/deseleccionar todos los roles para el permiso */}
+                                        {selectedPermission === `${entity}:${permission}` && (
+                                            <input
+                                                type="checkbox"
+                                                checked={selectAllPermissionRoles[`${entity}:${permission}`]}
+                                                onChange={handleSelectAllPermissionRoles}
+                                            />
+                                        )}
+                                        {permission}
+                                    </div>
+                                </th>
                             </React.Fragment>
                         ))
                     ))}
