@@ -1,5 +1,6 @@
 // RolesTable.js
 import React, { useState } from 'react';
+import './RolesTable.css'
 
 const RolesTable = ({
     roles,
@@ -35,6 +36,13 @@ const RolesTable = ({
 
     onSave
 }) => {
+    // //enter del input de roles
+    // const handleKeyDown = (event) => {
+    //     if (event.key === 'Enter') {
+    //         // Lógica para manejar la tecla Enter
+    //         handleAddRole();
+    //     }
+    // };
 
 
     // Función para formatear un texto según las reglas especificadas
@@ -164,8 +172,10 @@ const RolesTable = ({
                         ))}
 
                         <th colSpan="2">
-                            <button onClick={() => setShowAddPermissionModal(true)}>Añadir Nuevo Permiso</button>
-                            <button className="boton-save" onClick={onSave}>Salvar</button>
+                            <div className="buttons">
+                                <button onClick={() => setShowAddPermissionModal(true)}>➕ Permiso</button>
+                                <button className="boton-save" onClick={onSave}>Salvar</button>
+                            </div>
                         </th>
                     </tr>
                     <tr>
@@ -267,6 +277,7 @@ const RolesTable = ({
                                     type="text"
                                     value={newRole}
                                     onChange={(e) => setNewRole(e.target.value)}
+                                    onKeyDown={(event) => event.key === 'Enter' && handleAddRole()}
                                     placeholder="Nuevo Rol"
                                 />
                                 <img className="agregar-rol" src="/TeenyiconsUpSolid.svg" alt="agregar-Rol" onClick={handleAddRole} />

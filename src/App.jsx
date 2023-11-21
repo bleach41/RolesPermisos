@@ -1,4 +1,4 @@
-import RolesPermissionsTable from "./components/RolesPermissionsTable";
+import RolesPermissionsTable from "./components/RolesPermissionsTable/RolesPermissionsTable";
 
 
 

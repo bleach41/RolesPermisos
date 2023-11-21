@@ -1,7 +1,7 @@
 // RolesPermissionsTable.js
 import React, { useState, useEffect } from 'react';
-import RolesTable from './RolesTable';
-import AddPermissionModal from './AddPermissionModal';
+import RolesTable from '../TableRoles/RolesTable';
+import AddPermissionModal from '../AddPermissionModal/AddPermissionModal';
 
 const RolesPermissionsTable = ({ roles, permissions }) => {
     const [newRole, setNewRole] = useState('');
@@ -148,6 +148,9 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             });
         }
     };
+
+
+
 
 
 
