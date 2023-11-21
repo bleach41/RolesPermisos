@@ -230,6 +230,12 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const handleAddPermission = (newPermission) => {
         const [entity, permission] = newPermission.split(':');
 
+        // Verificar si el permiso ya existe para la entidad
+        if (updatedPermissions.includes(newPermission)) {
+            alert('Este permiso ya existe para la entidad.');
+            return; // No agregas el permiso de nuevo
+        }
+
         // Validar si la entidad ya existe
         if (!entities.includes(entity)) {
             // La entidad no existe, agregarla
@@ -265,6 +271,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         // Cerrar el modal
         setShowAddPermissionModal(false);
     };
+
 
     const getEntityPermissions = (entity) => {
         return updatedPermissions
