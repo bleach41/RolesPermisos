@@ -1,5 +1,6 @@
 // RolesTable.js
 import React, { useState } from 'react';
+import './RolesTable.css'
 
 const RolesTable = ({
     roles,
@@ -171,8 +172,10 @@ const RolesTable = ({
                         ))}
 
                         <th colSpan="2">
-                            <button onClick={() => setShowAddPermissionModal(true)}>Añadir Nuevo Permiso</button>
-                            <button className="boton-save" onClick={onSave}>Salvar</button>
+                            <div className="buttons">
+                                <button onClick={() => setShowAddPermissionModal(true)}>➕ Permiso</button>
+                                <button className="boton-save" onClick={onSave}>Salvar</button>
+                            </div>
                         </th>
                     </tr>
                     <tr>
