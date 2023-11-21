@@ -5,6 +5,14 @@ import './AddPermissionModal.css'
 const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) => {
     const [newPermission, setNewPermission] = useState('');
 
+    //enter del input de permisos
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            // Lógica para manejar la tecla Enter
+            handleAddPermission();
+        }
+    };
+
     const handleAddPermission = () => {
         // Validar el nuevo permiso antes de agregarlo
         if (isValidPermission(newPermission, entities)) {
@@ -48,16 +56,17 @@ const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) =
                             type="text"
                             placeholder="ENTITY : PERMISSION"
                             value={newPermission}
+                            onKeyDown={handleKeyDown}
                             onChange={(e) => setNewPermission(e.target.value)}
                             onClick={(e) => e.stopPropagation()}
                         />
                     </div>
                     <div className="modal-buttons">
-                        <button className="modal-button" onClick={handleAddPermission}>
-                            OK
-                        </button>
                         <button className="modal-button" onClick={onClose}>
                             Cancelar
+                        </button>
+                        <button className="modal-button" onClick={handleAddPermission}>
+                            OK
                         </button>
                     </div>
                 </div>

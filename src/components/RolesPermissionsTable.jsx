@@ -151,6 +151,9 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
 
 
+
+
+
     //roles
     useEffect(() => {
         // Inicializar selectAllPermissions cuando el componente se monta
