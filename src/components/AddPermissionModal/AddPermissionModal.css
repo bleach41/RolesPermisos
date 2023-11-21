@@ -30,6 +30,7 @@
 }
 
 .modal-button {
+    line-height: 20px;
     background-color: #808080;
     color: #ffffff;
     border: 1px solid #000000;
