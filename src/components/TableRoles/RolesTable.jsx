@@ -195,8 +195,8 @@ const RolesTable = ({
                                                 onChange={handleSelectAllPermissionRoles}
 
                                             />
+                                            {formatText(permission)}
                                         </div>
-                                        {formatText(permission)}
                                         {/* Añadir el ícono de eliminación */}
                                         {selectedPermission === `${entity}:${permission}` && (
                                             <img
