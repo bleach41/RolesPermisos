@@ -126,3 +126,7 @@ td:hover input[type="checkbox"] {
     pointer-events: auto;
     /* Habilita los eventos del mouse durante el hover */
 }
+
+.check-nombre {
+    display: flex;
+}

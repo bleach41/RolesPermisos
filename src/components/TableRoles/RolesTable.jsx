@@ -188,15 +188,15 @@ const RolesTable = ({
                                     <th key={`${entity}_${permission}`}
                                         onMouseOver={() => handlePermissionMouseOver(`${entity}:${permission}`)}
                                         onMouseOut={handlePermissionMouseOut}>
+                                        <div className="check-nombre">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectAllPermissionRoles[`${entity}:${permission}`] || false}
+                                                onChange={handleSelectAllPermissionRoles}
 
-                                        <input
-                                            type="checkbox"
-                                            checked={selectAllPermissionRoles[`${entity}:${permission}`] || false}
-                                            onChange={handleSelectAllPermissionRoles}
-
-                                        />
-
-                                        {formatText(permission)}
+                                            />
+                                            {formatText(permission)}
+                                        </div>
                                         {/* Añadir el ícono de eliminación */}
                                         {selectedPermission === `${entity}:${permission}` && (
                                             <img
