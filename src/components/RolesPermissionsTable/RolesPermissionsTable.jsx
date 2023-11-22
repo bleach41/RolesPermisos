@@ -20,7 +20,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const [selectedRole, setSelectedRole] = useState(null);
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
 
-    console.log(updatedPermissions)
+
     //optencion del permiso
     const getEntityPermissions = (entity) => {
         return updatedPermissions
@@ -78,7 +78,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     };
 
     // Nueva función para asignar/quitar un permiso a todos los roles
-    // RolesPermissionsTable.js
+
 
     // ...
 
