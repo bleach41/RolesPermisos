@@ -36,6 +36,8 @@ const RolesTable = ({
 
     onSave
 }) => {
+
+
     // //enter del input de roles
     // const handleKeyDown = (event) => {
     //     if (event.key === 'Enter') {
@@ -148,13 +150,13 @@ const RolesTable = ({
                                 <th colSpan={getEntityPermissions(entity).length}
                                     onMouseOver={() => handleEntityMouseOver(entity)} onMouseOut={handleEntityMouseOut}>
                                     {/* Checkbox para seleccionar/deseleccionar todos los permisos para la entidad */}
-                                    {selectedEntity === entity && (
-                                        <input
-                                            type="checkbox"
-                                            checked={selectAllEntityPermissions[entity]}
-                                            onChange={handleSelectAllEntityPermissions}
-                                        />
-                                    )}
+
+                                    <input
+                                        type="checkbox"
+                                        checked={selectAllEntityPermissions[entity] || false}
+                                        onChange={handleSelectAllEntityPermissions}
+                                    />
+
                                     {formatText(entity)}
                                     {selectedEntity === entity && (
                                         <img
@@ -186,14 +188,14 @@ const RolesTable = ({
                                     <th key={`${entity}_${permission}`}
                                         onMouseOver={() => handlePermissionMouseOver(`${entity}:${permission}`)}
                                         onMouseOut={handlePermissionMouseOut}>
-                                        {/* Checkbox para seleccionar/deseleccionar todos los roles para el permiso */}
-                                        {selectedPermission === `${entity}:${permission}` && (
-                                            <input
-                                                type="checkbox"
-                                                checked={selectAllPermissionRoles[`${entity}:${permission}`]}
-                                                onChange={handleSelectAllPermissionRoles}
-                                            />
-                                        )}
+
+                                        <input
+                                            type="checkbox"
+                                            checked={selectAllPermissionRoles[`${entity}:${permission}`] || false}
+                                            onChange={handleSelectAllPermissionRoles}
+
+                                        />
+
                                         {formatText(permission)}
                                         {/* Añadir el ícono de eliminación */}
                                         {selectedPermission === `${entity}:${permission}` && (
@@ -218,13 +220,14 @@ const RolesTable = ({
                             <tr onMouseOver={() => handleRoleMouseOver(role)} onMouseOut={handleRoleMouseOut}>
                                 <td>
                                     {/* Checkbox para seleccionar/deseleccionar todos los permisos para el rol */}
-                                    {selectedRole === role && (
-                                        <input
-                                            type="checkbox"
-                                            checked={selectAllPermissions}
-                                            onChange={handleSelectAllPermissions}
-                                        />
-                                    )}
+
+                                    <input
+                                        type="checkbox"
+                                        checked={selectAllPermissions || false}
+                                        onChange={handleSelectAllPermissions}
+
+                                    />
+
                                     {role.name}
                                     {/* Añadir el ícono de eliminación */}
                                     {selectedRole === role && (
@@ -255,7 +258,7 @@ const RolesTable = ({
                                         getEntityPermissions(entity).map(permission => (
                                             <React.Fragment key={`${entity}_${permission}`}>
                                                 <td>
-                                                    {updatedPermissions.includes(`${entity}:${permission}`) ? 'X' : ''}
+                                                    {updatedPermissions.includes(`${entity}:${permission}`) ? '✔' : ''}
                                                 </td>
                                             </React.Fragment>
                                         ))
@@ -283,7 +286,7 @@ const RolesTable = ({
                                 <img className="agregar-rol" src="/TeenyiconsUpSolid.svg" alt="agregar-Rol" onClick={handleAddRole} />
                             </div>
                         </td>
-                        <td colSpan={entities.length * 2}>
+                        <td colSpan={entities.length * 10}>
 
                         </td>
                     </tr>

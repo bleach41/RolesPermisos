@@ -1,27 +1,32 @@
+.table-container {
+    position: relative;
+    max-width: 100%;
+    max-height: 730px;
+}
+
 table {
-    border-collapse: collapse;
+
     border: 1px solid black;
     border-spacing: 0;
     width: 100%;
 
 }
 
-
-thead,
-tfoot {
-    background-color: rgb(22, 21, 21);
-    color: aliceblue;
-}
-
 th,
 td {
     text-align: center;
-    padding: 2em;
+    padding: 0.5rem;
     position: relative;
 }
 
 th {
-    border: 1px solid white;
+
+    border: 1px solid rgba(255, 255, 255, 0.611);
+    max-height: 50px;
+    /* ajusta el valor según tu necesidad */
+    min-width: 100px;
+    /* ajusta el valor según tu necesidad */
+
 }
 
 tbody tr:nth-child(even) {
@@ -37,7 +42,7 @@ tbody tr:nth-child(even) {
     right: 0;
 }
 
-/* Primera columna de la tabla (roles en tu caso) */
+/* Primera columna de la tabla */
 th:first-child,
 td:first-child {
     position: sticky;
@@ -45,26 +50,6 @@ td:first-child {
     z-index: 2;
     background-color: rgba(40, 41, 46, 0.819);
     backdrop-filter: blur(20px);
-}
-
-
-/* Filas de encabezado (entidades en tu caso) */
-/* th:nth-child(2),
-th:nth-child(3), */
-/* Puedes añadir más según sea necesario */
-td:nth-child(2),
-td:nth-child(3) {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-
-}
-
-.table-container {
-    max-width: 100%;
-    overflow-x: auto;
-
-    /* Barra de desplazamiento horizontal */
 }
 
 .agregar-rol {
@@ -92,11 +77,52 @@ button {
 
 button:hover {
     background-color: #A9A9A9;
-
 }
 
 .buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+thead {
+    z-index: 4;
+    position: sticky;
+    top: 0;
+    background-color: rgb(22, 21, 21);
+    color: aliceblue;
+}
+
+tfoot {
+    position: sticky;
+    bottom: 0;
+    background-color: rgb(22, 21, 21);
+    color: aliceblue;
+    z-index: 4;
+}
+
+th input[type="checkbox"] {
+    opacity: 0;
+
+    pointer-events: none;
+    /* Para que no afecte a los eventos del mouse */
+}
+
+td input[type="checkbox"] {
+    opacity: 0;
+
+    pointer-events: none;
+    /* Para que no afecte a los eventos del mouse */
+}
+
+th:hover input[type="checkbox"] {
+    opacity: 1;
+    pointer-events: auto;
+    /* Habilita los eventos del mouse durante el hover */
+}
+
+td:hover input[type="checkbox"] {
+    opacity: 1;
+    pointer-events: auto;
+    /* Habilita los eventos del mouse durante el hover */
 }
