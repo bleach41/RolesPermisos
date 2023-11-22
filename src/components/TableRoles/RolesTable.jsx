@@ -144,7 +144,7 @@ const RolesTable = ({
             <table>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th><img src="/vite.svg" />➕<img src="/react.svg" alt="" /></th>
                         {entities.map(entity => (
                             <React.Fragment key={entity}>
                                 <th colSpan={getEntityPermissions(entity).length}
