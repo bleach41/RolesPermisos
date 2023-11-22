@@ -120,14 +120,25 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const handleSelectAllEntityPermissions = () => {
         if (selectedEntity) {
             setUpdatedRoles((prevRoles) => {
-                return prevRoles.map((role) => {
+                // Obtener la lista completa de permisos para la entidad seleccionada
+                const entityPermissions = getEntityPermissions(selectedEntity);
+
+                // Verificar si todos los roles ya tienen todos esos permisos asignados
+                const allRolesHaveAllPermissions = prevRoles.every((role) =>
+                    entityPermissions.every(permission =>
+                        role.permissions.includes(`${selectedEntity}:${permission}`)
+                    )
+                );
+
+                // Actualizar los roles según la verificación anterior
+                const updatedRoles = prevRoles.map((role) => {
                     const entityPrefix = `${selectedEntity}:`;
 
-                    const updatedPermissions = selectAllEntityPermissions[selectedEntity]
+                    const updatedPermissions = allRolesHaveAllPermissions
                         ? role.permissions.filter(permission => !permission.startsWith(entityPrefix))
                         : [
+                            ...entityPermissions.map(action => `${selectedEntity}:${action}`),
                             ...role.permissions.filter(permission => !permission.startsWith(entityPrefix)),
-                            ...getEntityPermissions(selectedEntity).map(action => `${selectedEntity}:${action}`),
                         ];
 
                     return {
@@ -135,12 +146,12 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                         permissions: updatedPermissions,
                     };
                 });
+
+                return updatedRoles;
             });
 
             // Actualizar selectAllEntityPermissions
             setSelectAllEntityPermissions((prevPermissions) => {
-                console.log("Roles actuales", updatedRoles);
-                console.log("ROLES ORIGINALES:  ", roles);
                 return {
                     ...prevPermissions,
                     [selectedEntity]: !prevPermissions[selectedEntity],
@@ -148,6 +159,10 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             });
         }
     };
+
+
+
+
 
 
 
@@ -214,8 +229,11 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             return;
         }
 
-        // Obtener los permisos de lectura para todas las entidades existentes
-        const readPermissions = entities.map(entity => `${entity}:READ`);
+        // Obtener los permisos de lectura para todas las entidades, incluyendo las nuevas
+        const readPermissions = entities.flatMap(entity => {
+            const readPermission = `${entity}:READ`;
+            return updatedPermissions.includes(readPermission) ? [readPermission] : [];
+        });
 
         // Añadir lógica para agregar un nuevo rol con permisos de lectura
         const newRoleObject = {
@@ -229,7 +247,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
         // Limpiar el campo de nuevo rol después de la adición
         setNewRole('');
-        console.log(`roles actuales${JSON.stringify(updatedRoles)}`)
+        console.log(`roles actuales${JSON.stringify(updatedRoles)}`);
         console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
     };
 
