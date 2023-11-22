@@ -3,6 +3,14 @@ import React, { useState, useEffect } from 'react';
 import RolesTable from '../TableRoles/RolesTable';
 import AddPermissionModal from '../AddPermissionModal/AddPermissionModal';
 
+
+//funciona  testear
+export const getEntityPermissions = (updatedPermissions, entity) => {
+    return updatedPermissions
+        .filter(permission => permission.startsWith(`${entity}:`))
+        .map(permission => permission.split(":")[1]);
+};
+
 const RolesPermissionsTable = ({ roles, permissions }) => {
     const [newRole, setNewRole] = useState('');
     const [showAddPermissionModal, setShowAddPermissionModal] = useState(false);
@@ -11,6 +19,14 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const [entities, setEntities] = useState([...new Set(permissions.map(permission => permission.split(":")[0]))]);
     const [selectedRole, setSelectedRole] = useState(null);
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
+
+    console.log(updatedPermissions)
+    //optencion del permiso
+    const getEntityPermissions = (entity) => {
+        return updatedPermissions
+            .filter(permission => permission.startsWith(`${entity}:`))
+            .map(permission => permission.split(":")[1]);
+    };
 
 
     // Nueva función para manejar el clic en el botón "Salvar"
@@ -298,11 +314,6 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     };
 
 
-    const getEntityPermissions = (entity) => {
-        return updatedPermissions
-            .filter(permission => permission.startsWith(`${entity}:`))
-            .map(permission => permission.split(":")[1]);
-    };
 
     return (
         <div>
