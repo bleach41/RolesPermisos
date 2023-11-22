@@ -214,11 +214,14 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             return;
         }
 
-        // Añadir lógica para agregar un nuevo rol con permisos por defecto
+        // Obtener los permisos de lectura para todas las entidades existentes
+        const readPermissions = entities.map(entity => `${entity}:READ`);
+
+        // Añadir lógica para agregar un nuevo rol con permisos de lectura
         const newRoleObject = {
             id: (updatedRoles.length + 1).toString(),
             name: newRole,
-            permissions: permissions.filter(permission => permission.includes('READ'))
+            permissions: readPermissions,
         };
 
         // Actualizar el estado de los roles
@@ -229,6 +232,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         console.log(`roles actuales${JSON.stringify(updatedRoles)}`)
         console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
     };
+
 
     const handleAddPermission = (newPermission) => {
         const [entity, permission] = newPermission.split(':');
