@@ -168,8 +168,8 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             });
 
             setSelectAllPermissionRoles((prevPermissions) => {
-                console.log("Roles actuales", updatedRoles);
-                console.log("ROLES ORIGINALES:  ", roles);
+                // console.log("Roles actuales", updatedRoles);
+                // console.log("ROLES ORIGINALES:  ", roles);
                 return {
                     ...prevPermissions,
                     [selectedPermission]: !prevPermissions[selectedPermission],
@@ -189,7 +189,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             acc[entity] = false; //unmarked
             return acc;
         }, {});
-        console.log("Initial Select All Entity Permissions:", initialSelectAllEntityPermissions);
+        // console.log("Initial Select All Entity Permissions:", initialSelectAllEntityPermissions);
         setSelectAllEntityPermissions(initialSelectAllEntityPermissions);
 
     }, [entities]);
