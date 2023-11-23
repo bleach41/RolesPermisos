@@ -33,14 +33,14 @@ Este proyecto implementa un componente en ReactJS que facilita la gestión de ro
 git clone https://github.com/bleach41/RolesPermisos.git
 
 # Instalación de Dependencias:
-yarn
-npm install
-pnpm install
+* yarn
+* npm install
+* pnpm install
 
 # Ejecución de la Aplicación:
-yarn dev
-npm run dev
-pnpm dev
+* yarn dev
+* npm run dev
+* pnpm dev
 
 # Detalles
 * Tecnologías Utilizadas: Vite, Vitest, ReactJS, JavaScript, CSS, HTML5.
