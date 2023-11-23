@@ -82,7 +82,7 @@ const RolesTable = ({
 
         // Update the state of the entities
         setEntities(entitiesWithPermissions);
-        console.log(updatedRolesAfterPermissionDeletion)
+        // console.log(updatedRolesAfterPermissionDeletion)
     };
 
 
@@ -112,7 +112,7 @@ const RolesTable = ({
 
         // Update role status
         setUpdatedRoles(updatedRolesAfterEntityDeletion);
-        console.log(updatedRolesAfterEntityDeletion)
+        // console.log(updatedRolesAfterEntityDeletion)
     };
 
 
@@ -123,7 +123,7 @@ const RolesTable = ({
 
         // Update role status
         setUpdatedRoles(updatedRolesAfterDeletion);
-        console.log(updatedRolesAfterDeletion);
+        // console.log(updatedRolesAfterDeletion);
     };
 
 
