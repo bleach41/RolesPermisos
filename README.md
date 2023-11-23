@@ -18,8 +18,32 @@ Este proyecto implementa un componente en ReactJS que facilita la gestión de ro
 ![image](https://github.com/bleach41/RolesPermisos/assets/78830055/d9702ebd-1d16-4471-aa73-b3302b97593d)
 
 
-
 ![image](https://github.com/bleach41/RolesPermisos/assets/78830055/de82d15f-4003-4b23-880c-6cded93c8a60)
+
+# Funcionalidades Clave
+
+* Interfaz visual intuitiva para gestionar roles y permisos.
+* Asignación y eliminación de permisos a roles específicos.
+* Adición de nuevos roles con permisos predeterminados.
+* Adición de nuevos permisos con validación de sintaxis.
+* Integración con una API simulada para crear, actualizar y eliminar roles.
+
+# Clona el Repositorio:
+
+git clone https://github.com/bleach41/RolesPermisos.git
+
+# Instalación de Dependencias:
+yarn
+npm install
+pnpm install
+
+# Ejecución de la Aplicación:
+yarn dev
+npm run dev
+pnpm dev
+
+# Detalles
+* Tecnologías Utilizadas: Vite, Vitest, ReactJS, JavaScript, CSS, HTML5.
 
 
 # React + Vite
