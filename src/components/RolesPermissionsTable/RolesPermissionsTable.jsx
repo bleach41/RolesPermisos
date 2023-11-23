@@ -50,7 +50,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
     // function to assign/remove all permisssion to a rol
     const handleSelectAllPermissions = () => {
-        console.log('click')
+        // console.log('click')
         if (selectedRole) {
             setUpdatedRoles((prevRoles) => {
                 return prevRoles.map((role) => {
