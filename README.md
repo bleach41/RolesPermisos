@@ -8,7 +8,7 @@ Este proyecto implementa un componente en ReactJS que facilita la gestión de ro
 
 ## Ejemplo de Código
 
-<!-- // src/components/RolesPermissionsTable/RolesPermissionsTable.jsx
+// src/components/RolesPermissionsTable/RolesPermissionsTable.jsx
 // This component manages the roles and permissions table.
 
 import React, { useState, useEffect } from 'react';
@@ -40,14 +40,14 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
     //HANDLERS AND FUNCTIONS
     //ROLES
-    useEffect(() => {........ -->
+    useEffect(() => {........
 
 * el codigo esta organizado entorno a las tres variables fundamentales: roles, permisos y entidades 
 
 
 # prueba unitaria
 
-<!-- import { test } from 'vitest';
+import { test } from 'vitest';
 import { getEntityPermissions } from '../src/components/RolesPermissionsTable/RolesPermissionsTable'; // Cambia esto por la ruta real del archivo
 
 
@@ -58,7 +58,7 @@ test('returns proper permissions for a given entity', () => {
 
 
     expect(result).toEqual(['READ'])
-}); -->
+});
 
 ![image](https://github.com/bleach41/RolesPermisos/assets/78830055/de82d15f-4003-4b23-880c-6cded93c8a60)
 
