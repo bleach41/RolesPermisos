@@ -14,15 +14,21 @@ export const getEntityPermissions = (updatedPermissions, entity) => {
 };
 
 const RolesPermissionsTable = ({ roles, permissions }) => {
+    //VAR AND STATE
+    //ROLL
     const [newRole, setNewRole] = useState('');
-    const [showAddPermissionModal, setShowAddPermissionModal] = useState(false);
-    const [updatedPermissions, setUpdatedPermissions] = useState(JSON.parse(JSON.stringify(permissions)));
-    const [updatedRoles, setUpdatedRoles] = useState(JSON.parse(JSON.stringify(roles)));
-    const [entities, setEntities] = useState([...new Set(permissions.map(permission => permission.split(":")[0]))]);
     const [selectedRole, setSelectedRole] = useState(null);
+    const [updatedRoles, setUpdatedRoles] = useState(JSON.parse(JSON.stringify(roles)));
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
+    //PERMISSIONS
+    const [updatedPermissions, setUpdatedPermissions] = useState(JSON.parse(JSON.stringify(permissions)));
+    //ENTITIES
+    const [entities, setEntities] = useState([...new Set(permissions.map(permission => permission.split(":")[0]))]);
+    //MODAL
+    const [showAddPermissionModal, setShowAddPermissionModal] = useState(false);
 
 
+    //HANDLERS AND FUNCTIONS
     //ROLES
     useEffect(() => {
         // Initialize select All Permissions when the component is mounted
