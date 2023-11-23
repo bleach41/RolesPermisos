@@ -1,6 +1,6 @@
 
 import { test } from 'vitest';
-import { getEntityPermissions } from '../src/components/RolesPermissionsTable/RolesPermissionsTable'; // Cambia esto por la ruta real del archivo
+import { getEntityPermissions } from '../src/components/RolesPermissionsTable/RolesPermissionsTable'
 
 
 test('returns proper permissions for a given entity', () => {
