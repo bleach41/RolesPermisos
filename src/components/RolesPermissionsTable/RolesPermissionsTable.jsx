@@ -50,16 +50,21 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
 
     // function to assign/remove all permisssion to a rol
     const handleSelectAllPermissions = () => {
-
+        // console.log('click')
         if (selectedRole) {
             setUpdatedRoles((prevRoles) => {
                 return prevRoles.map((role) => {
                     if (role.id === selectedRole.id) {
+                        // Verificar si todos los permisos ya están asignados
+                        const allPermissionsAssigned = updatedPermissions.every((permission) =>
+                            role.permissions.includes(permission)
+                        );
+
                         return {
                             ...role,
-                            permissions: selectAllPermissions[selectedRole.id]
-                                ? []
-                                : [...updatedPermissions],
+                            permissions: allPermissionsAssigned
+                                ? [] // Todos los permisos ya están asignados, quitarlos
+                                : [...updatedPermissions], // No todos los permisos están asignados, agregarlos
                         };
                     }
                     return role;
@@ -75,6 +80,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             });
         }
     };
+
 
     //add rol
     const handleAddRole = () => {
