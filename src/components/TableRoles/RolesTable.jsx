@@ -144,7 +144,7 @@ const RolesTable = ({
             <table>
                 <thead>
                     <tr>
-                        <th><img src="/vite.svg" />➕<img src="/react.svg" alt="" /></th>
+                        <th><img src="/vite.svg" alt="icono-vite" />➕<img src="/react.svg" alt="icono-react" /></th>
                         {entities.map(entity => (
                             <React.Fragment key={entity}>
                                 <th colSpan={getEntityPermissions(entity).length}
@@ -233,7 +233,7 @@ const RolesTable = ({
                                     {selectedRole === role && (
                                         <img
                                             className="icon-trash"
-                                            src="/MdiTrashCanOutline.svg"
+                                            src="/MdiTrashCanOutline_blanco.svg"
                                             alt="Eliminar"
                                             onClick={() => handleDeleteRole(role.id)}
                                         // onMouseOver={() => handleRoleIconMouseOver(role)}
