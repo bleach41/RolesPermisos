@@ -1,71 +1,70 @@
-// RolesTable.js
-import React, { useState } from 'react';
+// src/components/RolesTable/RolesTable.jsx
+// This component displays the role table.
+import React from 'react';
 import './RolesTable.css'
 
 const RolesTable = ({
+    //roles
     roles,
+    newRole,
+    setNewRole,
     updatedRoles,
-    entities,
-    getEntityPermissions,
     handleRoleMouseOver,
     handleRoleMouseOut,
+    handleAddRole,
     selectedRole,
+    handleSelectAllPermissionRoles,
+    setUpdatedRoles,
+
+
+    //permissions
     selectAllPermissions,
     handleSelectAllPermissions,
-    newRole,
+    handlePermissionMouseOver,
+    handlePermissionMouseOut,
     updatedPermissions,
-    handleAddRole,
-    setShowAddPermissionModal,
-    setNewRole,
+    selectAllPermissionRoles,
+    selectedPermission,
+    setUpdatedPermissions,
+
+    //entities
+    entities,
+    getEntityPermissions,
     handleEntityMouseOver,
     handleEntityMouseOut,
     selectedEntity,
     selectAllEntityPermissions,
     handleSelectAllEntityPermissions,
-
-    selectedPermission,
-    handlePermissionMouseOver,
-    handlePermissionMouseOut,
-    selectAllPermissionRoles,
-    handleSelectAllPermissionRoles,
-
-    setUpdatedRoles,
-
     setEntities,
-    setUpdatedPermissions,
 
+
+    //Mmodal
+    setShowAddPermissionModal,
+
+    //button save
     onSave
 }) => {
 
 
-    // //enter del input de roles
-    // const handleKeyDown = (event) => {
-    //     if (event.key === 'Enter') {
-    //         // Lógica para manejar la tecla Enter
-    //         handleAddRole();
-    //     }
-    // };
-
-
-    // Función para formatear un texto según las reglas especificadas
+    // Function to format a text according to the specified rules
     const formatText = (text) => {
-        // Capitalizar la primera letra y convertir el resto en minúsculas
+        // Capitalize the first letter and convert the rest to lowercase
         const formattedText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-        // Sustituir el carácter de subrayado por un espacio en blanco
+        // Replace the underscore character with a blank space
         const finalText = formattedText.replace(/_/g, ' ');
         return finalText;
     };
 
 
-    // Eliminación de permisos
+    // Removal of permissions
     const handlePermissionDelete = (permission) => {
-        // Filtrar los permisos para excluir el permiso actual
+        // Filter permissions to exclude the current permission
         const updatedPermissionsAfterDeletion = updatedPermissions.filter(p => p !== permission);
 
-        // Actualizar el estado de los permisos
+        // Update permissions status
         setUpdatedPermissions(updatedPermissionsAfterDeletion);
 
-        // Filtrar los roles para excluir los permisos asociados al permiso actual
+        // Filter roles to exclude permissions associated with the current permission
         const updatedRolesAfterPermissionDeletion = updatedRoles.map(role => {
             return {
                 ...role,
@@ -73,15 +72,15 @@ const RolesTable = ({
             };
         });
 
-        // Actualizar el estado de los roles
+        // Update role status
         setUpdatedRoles(updatedRolesAfterPermissionDeletion);
 
-        // Filtrar las entidades para excluir la entidad actual si no tiene permisos asociados
+        // Filter the entities to exclude the current entity if it does not have permissions associated with it
         const entitiesWithPermissions = entities.filter(entity => {
             return updatedPermissionsAfterDeletion.some(p => p.startsWith(`${entity}:`));
         });
 
-        // Actualizar el estado de las entidades
+        // Update the state of the entities
         setEntities(entitiesWithPermissions);
         console.log(updatedRolesAfterPermissionDeletion)
     };
@@ -89,21 +88,21 @@ const RolesTable = ({
 
 
 
-    // Eliminación de entidades
+    // Deleting entities
     const handleDeleteEntity = (entity) => {
-        // Filtrar las entidades para excluir la entidad actual
+        // Filter the entities to exclude the current entity
         const updatedEntities = entities.filter(existingEntity => existingEntity !== entity);
 
-        // Actualizar el estado de las entidades
+        // Update the state of the entities
         setEntities(updatedEntities);
 
-        // Filtrar los permisos para excluir los asociados a la entidad actual
+        // Filter permissions to exclude those associated with the current entity
         const updatedPermissionsAfterEntityDeletion = updatedPermissions.filter(permission => !permission.startsWith(`${entity}:`));
 
-        // Actualizar el estado de los permisos
+        // Update permissions status
         setUpdatedPermissions(updatedPermissionsAfterEntityDeletion);
 
-        // Filtrar los roles para excluir los permisos asociados a la entidad actual
+        // Filter roles to exclude permissions associated with the current entity
         const updatedRolesAfterEntityDeletion = updatedRoles.map(role => {
             return {
                 ...role,
@@ -111,31 +110,21 @@ const RolesTable = ({
             };
         });
 
-        // Actualizar el estado de los roles
+        // Update role status
         setUpdatedRoles(updatedRolesAfterEntityDeletion);
         console.log(updatedRolesAfterEntityDeletion)
     };
 
 
-    //eliminacion de roles
+    //elimination of roles
     const handleDeleteRole = (roleId) => {
-        // Filtrar los roles para excluir el rol con el roleId
+        // Filter the roles to exclude the role with the roleId
         const updatedRolesAfterDeletion = updatedRoles.filter(role => role.id !== roleId);
 
-        // Actualizar el estado de roles
+        // Update role status
         setUpdatedRoles(updatedRolesAfterDeletion);
         console.log(updatedRolesAfterDeletion);
     };
-
-    // const handleRoleIconMouseOver = (role) => {
-    //     handleRoleMouseOver(role);
-    // };
-
-    // const handleRoleIconMouseOut = () => {
-    //     handleRoleMouseOut();
-    // };
-
-
 
 
 
@@ -149,7 +138,7 @@ const RolesTable = ({
                             <React.Fragment key={entity}>
                                 <th colSpan={getEntityPermissions(entity).length}
                                     onMouseOver={() => handleEntityMouseOver(entity)} onMouseOut={handleEntityMouseOut}>
-                                    {/* Checkbox para seleccionar/deseleccionar todos los permisos para la entidad */}
+                                    {/* Checkbox to select/deselect all permissions for the entity */}
 
                                     <input
                                         type="checkbox"
@@ -164,8 +153,7 @@ const RolesTable = ({
                                             src="/MdiTrashCanOutline_blanco.svg"
                                             alt="Eliminar"
                                             onClick={() => handleDeleteEntity(entity)}
-                                        // onMouseOver={() => handleRoleIconMouseOver(role)}
-                                        // onMouseOut={handleRoleIconMouseOut}
+
                                         />
                                     )}
 
@@ -197,7 +185,7 @@ const RolesTable = ({
                                             />
                                             {formatText(permission)}
                                         </div>
-                                        {/* Añadir el ícono de eliminación */}
+                                        {/*delete icon */}
                                         {selectedPermission === `${entity}:${permission}` && (
                                             <img
                                                 className="icon-trash"
@@ -219,7 +207,7 @@ const RolesTable = ({
                         <React.Fragment key={role.id}>
                             <tr onMouseOver={() => handleRoleMouseOver(role)} onMouseOut={handleRoleMouseOut}>
                                 <td>
-                                    {/* Checkbox para seleccionar/deseleccionar todos los permisos para el rol */}
+                                    {/* Checkbox to select/deselect all permissions for the role */}
 
                                     <input
                                         type="checkbox"
@@ -229,15 +217,14 @@ const RolesTable = ({
                                     />
 
                                     {role.name}
-                                    {/* Añadir el ícono de eliminación */}
+                                    {/*delete icon */}
                                     {selectedRole === role && (
                                         <img
                                             className="icon-trash"
                                             src="/MdiTrashCanOutline_blanco.svg"
                                             alt="Eliminar"
                                             onClick={() => handleDeleteRole(role.id)}
-                                        // onMouseOver={() => handleRoleIconMouseOver(role)}
-                                        // onMouseOut={handleRoleIconMouseOut}
+
                                         />
                                     )}
                                 </td>
@@ -274,7 +261,7 @@ const RolesTable = ({
                 <tfoot>
                     <tr>
                         <td>
-                            {/* Campo para ingresar el nuevo rol */}
+                            {/* Field to enter the new role */}
                             <div className="flex-input">
                                 <input
                                     type="text"

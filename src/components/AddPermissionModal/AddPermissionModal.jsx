@@ -1,11 +1,12 @@
-//AddPermissionModal
+// src/components/AddPermissionModal/AddPermissionModal.jsx
+// This component shows the modal to add permissions.
 import React, { useState } from 'react';
 import './AddPermissionModal.css'
 
 const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) => {
     const [newPermission, setNewPermission] = useState('');
 
-    //enter del input de permisos
+    //enter permissions input
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             // Lógica para manejar la tecla Enter
@@ -14,7 +15,7 @@ const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) =
     };
 
     const handleAddPermission = () => {
-        // Validar el nuevo permiso antes de agregarlo
+        // Validate the new permission before adding it
         if (isValidPermission(newPermission, entities)) {
             onAddPermission(newPermission);
             onClose();
@@ -24,26 +25,26 @@ const AddPermissionModal = ({ showModal, onClose, onAddPermission, entities }) =
     };
 
     const isValidPermission = (permission, entities) => {
-        // Verificar si la cadena tiene el formato correcto (ENTITY:PERMISSION)
+        // Check if the string is in the correct format (ENTITY:PERMISSION)
         const formatRegex = /^[A-Z_]+:[A-Z_]+$/;
         if (!formatRegex.test(permission)) {
             return false;
         }
 
-        // Obtener la entidad del permiso (última parte antes de ":")
+        // Get the permission entity (last part before ":")
         const entity = permission.split(':')[0];
 
-        // Verificar si la entidad ya existe en la lista de entidades
+        // Check if the entity already exists in the entity list
         if (entities.includes(entity)) {
-            return true;  // La entidad existe, permitir la adición del permiso
+            return true;  // Entity exists, allow adding permission
         }
 
-        // La entidad no existe, permitir la adición de la entidad y el permiso
+        // Entity does not exist, allow adding entity and permission
         return true;
     };
 
     return (
-        // Renderizar el modal con un input y un botón "Ok"
+        // Render the modal with an input, an "Ok" and a "cancel" button
         <div
             className={`modal-overlay ${showModal ? 'show' : ''}`}
             onClick={(e) => e.stopPropagation()}

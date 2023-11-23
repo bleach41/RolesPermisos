@@ -1,10 +1,12 @@
-// RolesPermissionsTable.js
+// src/components/RolesPermissionsTable/RolesPermissionsTable.jsx
+// This component manages the roles and permissions table.
+
 import React, { useState, useEffect } from 'react';
 import RolesTable from '../TableRoles/RolesTable';
 import AddPermissionModal from '../AddPermissionModal/AddPermissionModal';
 
 
-//funciona  testear
+//function to test
 export const getEntityPermissions = (updatedPermissions, entity) => {
     return updatedPermissions
         .filter(permission => permission.startsWith(`${entity}:`))
@@ -21,54 +23,112 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
     const [selectAllPermissions, setSelectAllPermissions] = useState({});
 
 
-    //optencion del permiso
+    //ROLES
+    useEffect(() => {
+        // Initialize select All Permissions when the component is mounted
+        const initialSelectAllPermissions = roles.reduce((acc, role) => {
+            acc[role.id] = role.permissions.length > 0;
+            return acc;
+        }, {});
+        setSelectAllPermissions(initialSelectAllPermissions);
+    }, [roles]);
+
+    //MouseOvers roles
+    const handleRoleMouseOver = (role) => {
+        setSelectedRole(role);
+    };
+
+    const handleRoleMouseOut = () => {
+        setSelectedRole(null);
+    };
+
+    // function to assign/remove all permisssion to a rol
+    const handleSelectAllPermissions = () => {
+
+        if (selectedRole) {
+            setUpdatedRoles((prevRoles) => {
+                return prevRoles.map((role) => {
+                    if (role.id === selectedRole.id) {
+                        return {
+                            ...role,
+                            permissions: selectAllPermissions[selectedRole.id]
+                                ? []
+                                : [...updatedPermissions],
+                        };
+                    }
+                    return role;
+                });
+            });
+
+            // Update selectAllPermissions
+            setSelectAllPermissions((prevPermissions) => {
+                return {
+                    ...prevPermissions,
+                    [selectedRole.id]: !prevPermissions[selectedRole.id],
+                };
+            });
+        }
+    };
+
+    //add rol
+    const handleAddRole = () => {
+        // Validate that the name of the new role is not empty
+        if (newRole.trim() === '') {
+            alert('Por favor, introduce un nombre válido para el nuevo rol.');
+            return;
+        }
+
+        // Check if the new role already exists
+        if (updatedRoles.some(role => role.name.toLowerCase() === newRole.toLowerCase())) {
+            alert('Ya existe un rol con ese nombre. Por favor, elige un nombre diferente.');
+            return;
+        }
+
+        // Get read permissions for all entities, including new ones
+        const readPermissions = entities.flatMap(entity => {
+            const readPermission = `${entity}:READ`;
+            return updatedPermissions.includes(readPermission) ? [readPermission] : [];
+        });
+
+        // Add logic to add a new role with read permissions
+        const newRoleObject = {
+            id: (updatedRoles.length + 1).toString(),
+            name: newRole,
+            permissions: readPermissions,
+        };
+
+        // Update role status
+        setUpdatedRoles([...updatedRoles, newRoleObject]);
+
+        // Clear new role field after addition
+        setNewRole('');
+
+    };
+
+
+    //PERMISSIONS
+    // New states for the PERMISSIONS checkbox
+    const [selectedPermission, setSelectedPermission] = useState(null);
+    const [selectAllPermissionRoles, setSelectAllPermissionRoles] = useState({});
+
+    useEffect(() => {
+
+        // Initialize selectAllPermissionRoles when the component is mounted
+        const initialSelectAllPermissionRoles = permissions.reduce((acc, permission) => {
+            acc[permission] = false; //unmarked
+            return acc;
+        }, {});
+        setSelectAllPermissionRoles(initialSelectAllPermissionRoles);
+    }, [permissions]);
+
+    //obtaining permission
     const getEntityPermissions = (entity) => {
         return updatedPermissions
             .filter(permission => permission.startsWith(`${entity}:`))
             .map(permission => permission.split(":")[1]);
     };
 
-
-    // Nueva función para manejar el clic en el botón "Salvar"
-    const handleSave = () => {
-        // Devuelve el arreglo actualizado con roles y permisos
-        const result = { roles: updatedRoles, permissions: updatedPermissions };
-        console.log('Resultado de la función handleSave:', result);
-        return result;
-    };
-
-    // Nuevos estados para el checkbox de PERMISOS
-    const [selectedPermission, setSelectedPermission] = useState(null);
-    const [selectAllPermissionRoles, setSelectAllPermissionRoles] = useState({});
-
-    //PERMISOS
-    useEffect(() => {
-
-        // Inicializar selectAllPermissionRoles cuando el componente se monta
-        const initialSelectAllPermissionRoles = permissions.reduce((acc, permission) => {
-            acc[permission] = false; // o true según tu lógica
-            return acc;
-        }, {});
-        setSelectAllPermissionRoles(initialSelectAllPermissionRoles);
-    }, [permissions]);
-    // Nuevos estados para el checkbox de entidades
-    const [selectedEntity, setSelectedEntity] = useState(null);
-    const [selectAllEntityPermissions, setSelectAllEntityPermissions] = useState({});
-
-    //ENTIDADES
-    useEffect(() => {
-        // Inicializar selectAllEntityPermissions cuando el componente se monta
-        const initialSelectAllEntityPermissions = entities.reduce((acc, entity) => {
-            acc[entity] = false; // o true según tu lógica
-            return acc;
-        }, {});
-        console.log("Initial Select All Entity Permissions:", initialSelectAllEntityPermissions);
-        setSelectAllEntityPermissions(initialSelectAllEntityPermissions);
-
-    }, [entities]);
-
-
-    //permisos
+    //MouseOvers permisssions
     const handlePermissionMouseOver = (permission) => {
         setSelectedPermission(permission);
     };
@@ -77,11 +137,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         setSelectedPermission(null);
     };
 
-    // Nueva función para asignar/quitar un permiso a todos los roles
-
-
-    // ...
-
+    // function to assign/remove a permission to all roles
     const handleSelectAllPermissionRoles = () => {
         if (selectedPermission) {
             setUpdatedRoles((prevRoles) => {
@@ -116,37 +172,47 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         }
     };
 
+    //ENTITIES
+    // New states for the entities checkbox
+    const [selectedEntity, setSelectedEntity] = useState(null);
+    const [selectAllEntityPermissions, setSelectAllEntityPermissions] = useState({});
 
+    useEffect(() => {
+        // Initialize selectAllEntityPermissions when the component is mounted
+        const initialSelectAllEntityPermissions = entities.reduce((acc, entity) => {
+            acc[entity] = false; //unmarked
+            return acc;
+        }, {});
+        console.log("Initial Select All Entity Permissions:", initialSelectAllEntityPermissions);
+        setSelectAllEntityPermissions(initialSelectAllEntityPermissions);
 
-    // ...
+    }, [entities]);
 
-
-    // Nueva función para manejar el mouseover sobre una entidad
+    //MouseOvers entities
     const handleEntityMouseOver = (entity) => {
 
         setSelectedEntity(entity);
     };
 
-    // Nueva función para manejar el mouseout sobre una entidad
     const handleEntityMouseOut = () => {
         setSelectedEntity(null);
     };
 
-    // Nueva función para asignar/quitar todos los permisos asociados a una entidad para todos los roles
+    //function to assign/remove all permissions associated with an entity for all roles
     const handleSelectAllEntityPermissions = () => {
         if (selectedEntity) {
             setUpdatedRoles((prevRoles) => {
-                // Obtener la lista completa de permisos para la entidad seleccionada
+                // Get the full list of permissions for the selected entity
                 const entityPermissions = getEntityPermissions(selectedEntity);
 
-                // Verificar si todos los roles ya tienen todos esos permisos asignados
+                // Check if all roles already have all those permissions assigned
                 const allRolesHaveAllPermissions = prevRoles.every((role) =>
                     entityPermissions.every(permission =>
                         role.permissions.includes(`${selectedEntity}:${permission}`)
                     )
                 );
 
-                // Actualizar los roles según la verificación anterior
+                // Update the roles based on the previous check
                 const updatedRoles = prevRoles.map((role) => {
                     const entityPrefix = `${selectedEntity}:`;
 
@@ -166,7 +232,7 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
                 return updatedRoles;
             });
 
-            // Actualizar selectAllEntityPermissions
+            // Update selectAllEntityPermissions
             setSelectAllEntityPermissions((prevPermissions) => {
                 return {
                     ...prevPermissions,
@@ -176,128 +242,37 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         }
     };
 
-
-
-
-
-
-
-
-
-
-    //roles
-    useEffect(() => {
-        // Inicializar selectAllPermissions cuando el componente se monta
-        const initialSelectAllPermissions = roles.reduce((acc, role) => {
-            acc[role.id] = role.permissions.length > 0;
-            return acc;
-        }, {});
-        setSelectAllPermissions(initialSelectAllPermissions);
-    }, [roles]);
-    //roles
-    const handleRoleMouseOver = (role) => {
-        setSelectedRole(role);
-    };
-    //roles
-    const handleRoleMouseOut = () => {
-        setSelectedRole(null);
-    };
-    //roles
-    const handleSelectAllPermissions = () => {
-        console.log("click")
-        console.log(`roles actuales${JSON.stringify(updatedRoles)}`)
-        console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
-        if (selectedRole) {
-            setUpdatedRoles((prevRoles) => {
-                return prevRoles.map((role) => {
-                    if (role.id === selectedRole.id) {
-                        return {
-                            ...role,
-                            permissions: selectAllPermissions[selectedRole.id]
-                                ? []
-                                : [...updatedPermissions],
-                        };
-                    }
-                    return role;
-                });
-            });
-
-            // Actualizar selectAllPermissions
-            setSelectAllPermissions((prevPermissions) => {
-                return {
-                    ...prevPermissions,
-                    [selectedRole.id]: !prevPermissions[selectedRole.id],
-                };
-            });
-        }
-    };
-
-    const handleAddRole = () => {
-        // Validar que el nombre del nuevo rol no esté vacío
-        if (newRole.trim() === '') {
-            alert('Por favor, introduce un nombre válido para el nuevo rol.');
-            return;
-        }
-
-        // Verificar si el nuevo rol ya existe
-        if (updatedRoles.some(role => role.name.toLowerCase() === newRole.toLowerCase())) {
-            alert('Ya existe un rol con ese nombre. Por favor, elige un nombre diferente.');
-            return;
-        }
-
-        // Obtener los permisos de lectura para todas las entidades, incluyendo las nuevas
-        const readPermissions = entities.flatMap(entity => {
-            const readPermission = `${entity}:READ`;
-            return updatedPermissions.includes(readPermission) ? [readPermission] : [];
-        });
-
-        // Añadir lógica para agregar un nuevo rol con permisos de lectura
-        const newRoleObject = {
-            id: (updatedRoles.length + 1).toString(),
-            name: newRole,
-            permissions: readPermissions,
-        };
-
-        // Actualizar el estado de los roles
-        setUpdatedRoles([...updatedRoles, newRoleObject]);
-
-        // Limpiar el campo de nuevo rol después de la adición
-        setNewRole('');
-        console.log(`roles actuales${JSON.stringify(updatedRoles)}`);
-        console.log(`ROLES ORIGINALES:   ${JSON.stringify(roles)}`);
-    };
-
-
+    //add permission and entity
     const handleAddPermission = (newPermission) => {
-        const [entity, permission] = newPermission.split(':');
+        const [entity, permission] = newPermission.split(':')
 
-        // Verificar si el permiso ya existe para la entidad
+        // Check if the permission already exists for the entity
         if (updatedPermissions.includes(newPermission)) {
-            alert('Este permiso ya existe para la entidad.');
-            return; // No agregas el permiso de nuevo
+            alert('Este permiso ya existe para la entidad.')
+            return; // Don't add the permission again
         }
 
-        // Validar si la entidad ya existe
+        // Validate if the entity already exists
         if (!entities.includes(entity)) {
-            // La entidad no existe, agregarla
+            // The entity does not exist, add it
             setEntities([...entities, entity]);
 
-            // Actualizar selectAllEntityPermissions
+            // Update selectAllEntityPermissions
             setSelectAllEntityPermissions((prevPermissions) => {
                 return {
                     ...prevPermissions,
-                    [entity]: false, // Puedes ajustar el valor inicial según tu lógica
-                };
-            });
+                    [entity]: false,
+                }
+            })
         }
 
-        // Añadir el nuevo permiso al estado
-        setUpdatedPermissions([...updatedPermissions, newPermission]);
+        // Add the new permission to the state
+        setUpdatedPermissions([...updatedPermissions, newPermission])
 
-        // Añadir el nuevo permiso a todos los roles
+        // Add the new permission to all roles
         setUpdatedRoles((prevRoles) => {
             return prevRoles.map((role) => {
-                const entityPrefix = `${entity}:`;
+                const entityPrefix = `${entity}:`
 
                 return {
                     ...role,
@@ -309,9 +284,19 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
             });
         });
 
-        // Cerrar el modal
+        // Close the modal
         setShowAddPermissionModal(false);
-    };
+    }
+
+
+
+    // New function to handle the click on the "Save" button
+    const handleSave = () => {
+        // Returns the array updated with roles and permissions
+        const result = { roles: updatedRoles, permissions: updatedPermissions };
+        console.log('Resultado de la función handleSave:', result);//UNICO CONSOL.LOG() QUE DA COMO RESULTADO UN TEST COMPLETO
+        return result;
+    }
 
 
 
@@ -319,43 +304,50 @@ const RolesPermissionsTable = ({ roles, permissions }) => {
         <div>
             {/* Componente de la tabla de roles */}
             <RolesTable
+                //ROLES
                 roles={roles}
+                newRole={newRole}
+                setNewRole={setNewRole}
                 updatedRoles={updatedRoles}
-                entities={entities}
-                getEntityPermissions={getEntityPermissions}
+                setUpdatedRoles={setUpdatedRoles}
                 handleRoleMouseOver={handleRoleMouseOver}
                 handleRoleMouseOut={handleRoleMouseOut}
                 selectedRole={selectedRole}
-                selectAllPermissions={selectAllPermissions}
-                handleSelectAllPermissions={handleSelectAllPermissions}
-                newRole={newRole}
-                updatedPermissions={updatedPermissions}
                 handleAddRole={handleAddRole}
-                setShowAddPermissionModal={setShowAddPermissionModal}
-                setNewRole={setNewRole}
+                handleSelectAllPermissionRoles={handleSelectAllPermissionRoles}
 
+
+                //PERMISIONS
+                updatedPermissions={updatedPermissions}
+                selectedPermission={selectedPermission}
+                handlePermissionMouseOver={handlePermissionMouseOver}
+                handlePermissionMouseOut={handlePermissionMouseOut}
+                setUpdatedPermissions={setUpdatedPermissions}
+                handleSelectAllPermissions={handleSelectAllPermissions}
+                selectAllPermissionRoles={selectAllPermissionRoles}
+
+
+                //ENTITIES
+                entities={entities}
+                setEntities={setEntities}
+                getEntityPermissions={getEntityPermissions}
+                selectAllPermissions={selectAllPermissions}
                 handleSelectAllEntityPermissions={handleSelectAllEntityPermissions}
                 handleEntityMouseOut={handleEntityMouseOut}
                 handleEntityMouseOver={handleEntityMouseOver}
                 selectedEntity={selectedEntity}
                 selectAllEntityPermissions={selectAllEntityPermissions}
 
-                selectedPermission={selectedPermission}
-                handlePermissionMouseOver={handlePermissionMouseOver}
-                handlePermissionMouseOut={handlePermissionMouseOut}
-                selectAllPermissionRoles={selectAllPermissionRoles}
-                handleSelectAllPermissionRoles={handleSelectAllPermissionRoles}
 
-                setUpdatedRoles={setUpdatedRoles}
+                //MODAL
+                setShowAddPermissionModal={setShowAddPermissionModal}
 
-                setEntities={setEntities}
-                setUpdatedPermissions={setUpdatedPermissions}
-
+                //BUTTON SAVE
                 onSave={handleSave}
 
             />
 
-            {/* Componente del modal de agregar permisos */}
+            {/* Add permissions modal component */}
             <AddPermissionModal
                 showModal={showAddPermissionModal}
                 onClose={() => setShowAddPermissionModal(false)}
