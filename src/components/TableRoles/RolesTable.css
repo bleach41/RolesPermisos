@@ -23,9 +23,7 @@ th {
 
     border: 1px solid rgba(255, 255, 255, 0.611);
     max-height: 50px;
-    /* ajusta el valor según tu necesidad */
     min-width: 100px;
-    /* ajusta el valor según tu necesidad */
 
 }
 
@@ -45,10 +43,11 @@ tbody tr:nth-child(even) {
 /* Primera columna de la tabla */
 th:first-child,
 td:first-child {
+    color: aliceblue;
     position: sticky;
     left: 0;
     z-index: 2;
-    background-color: rgba(40, 41, 46, 0.819);
+    background-color: rgba(15, 16, 17, 0.81);
     backdrop-filter: blur(20px);
 }
 
@@ -67,7 +66,7 @@ button {
     text-align: center;
     line-height: 20px;
     background-color: #808080;
-    color: #ffffff;
+    color: #000000;
     border: 1px solid #ffffff;
     padding: 10px 10px;
     cursor: pointer;
