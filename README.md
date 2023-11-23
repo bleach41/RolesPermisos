@@ -42,7 +42,8 @@ yarn dev
 npm run dev
 pnpm dev
 
-
+# Detalles
+* Tecnologías Utilizadas: Vite, Vitest, ReactJS, JavaScript, CSS, HTML5.
 
 
 # React + Vite
